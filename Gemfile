@@ -30,6 +30,8 @@ gem 'rails_admin', '~> 3.0'
 
 gem 'cssbundling-rails'
 
+gem 'sassc-rails'
+
 gem 'pg'
 
 gem "aws-sdk-s3", "~> 1.14"
