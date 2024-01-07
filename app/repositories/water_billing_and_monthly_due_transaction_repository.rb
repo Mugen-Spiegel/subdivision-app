@@ -82,7 +82,7 @@ class WaterBillingAndMonthlyDueTransactionRepository
         monthly_due_transaction = []
         balance_transaction = {}
         monthly_due = MonthlyDueRepository.get_monthly_due(water_billing.subdivision_id)
-        
+        puts water_billing.year, water_billing.month, "asdadsasdsa"
         subdivision_latest_transaction = User.all_users_with_latest_transactions(water_billing.year, water_billing.month).where(subdivision_id: water_billing.subdivision_id)
         subdivision_latest_transaction.each do |transaction|
             water_billing_transactions << {
@@ -105,7 +105,7 @@ class WaterBillingAndMonthlyDueTransactionRepository
             }
         end
 
-        User.all_new_user.each do |user|
+        User.all_new_user.where(subdivision_id: water_billing.subdivision_id).each do |user|
 
             water_billing_transactions << {
                 is_paid: WaterBillingTransaction::UN_PAID,
@@ -181,5 +181,8 @@ class WaterBillingAndMonthlyDueTransactionRepository
     def pdf_bill_details()
         WaterBillingTransaction.user_total_unpaid_bill()
     end
-    
+
+    def sum_amount_group_by_month(year)
+        # WaterBillingTransaction.select()
+    end
 end
