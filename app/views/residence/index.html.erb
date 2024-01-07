@@ -1,4 +1,5 @@
 <%= turbo_frame_tag 'residence', data: {turbo_frame: "_top", remote:"true"} do %>
     <%= render "residence/forms/search"%>
+    <%= render "residence/independent_component/redirect_user_sign_in"%>
     <%= render "residence/residence_list/residence_table"%>
 <% end %>
