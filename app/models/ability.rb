@@ -6,7 +6,6 @@ class Ability
   def initialize(user)
     # Define abilities for the user here. For example:
     #
-      puts user.present?, "saddsaads"
       return unless user.present?
       can :read, :all
       return unless user.admin?
