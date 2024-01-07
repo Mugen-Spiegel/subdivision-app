@@ -5,6 +5,11 @@
 
     <div class="  row g-3 align-items-center">
           <div class="form-group col">
+            <%unless params['subdivision_uuid'].nil? %>
+                <%= form.hidden_field :subdivision_id, value: _subdivision(params['subdivision_uuid']).id %>
+            <%else %>
+                <%= form.hidden_field :subdivision_id, value: params["user"]['subdivision_id'] %>
+            <%end%>
               <%= form.label :first_name%>
               <%= form.text_field :first_name, {class:"form-control", placeholder:"First Name"} %>
           </div>
