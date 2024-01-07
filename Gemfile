@@ -87,4 +87,4 @@ group :test do
 end
 gem "cssbundling-rails"
 gem "cssbundling-rails"
-gem "cssbundling-rails"
+gem "sassc-rails"
