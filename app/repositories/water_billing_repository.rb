@@ -54,7 +54,7 @@ class WaterBillingRepository
             is_paid: WaterBilling::UN_PAID,
             per_cubic_price: price_per_cubic(ids_count).round(2),
             subdivision_id: self.subdivision_id,
-            number_residence: User.where(subdivision_id: self.subdivision_id).count
+            number_residence: User.where(subdivision_id: self.subdivision_id, admin: false).count
         )
     end
 
