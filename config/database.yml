@@ -10,15 +10,6 @@ default: &default
   encoding: unicode
   adapter: postgresql
 
-
-localhost:
-  <<: *default
-  database: <%=Rails.application.credentials.DB_LOCAL_NAME%>
-  host: <%=Rails.application.credentials.DB_LOCAL_HOST%>
-  port: <%=Rails.application.credentials.DB_LOCAL_PORT%>
-  user: <%=Rails.application.credentials.DB_LOCAL_USER%>
-  password: <%=Rails.application.credentials.DB_LOCAL_PASS%>
-
 development:
   <<: *default
   database: <%=Rails.application.credentials.DB_DEV_NAME%>
@@ -33,11 +24,18 @@ development:
 test:
   <<: *default
   database: subdivision_tool_test
-  host: <%=Rails.application.credentials.DB_LOCAL_HOST%>
-  port: <%=Rails.application.credentials.DB_LOCAL_PORT%>
-  user: <%=Rails.application.credentials.DB_LOCAL_USER%>
-  password: <%=Rails.application.credentials.DB_LOCAL_PASS%>
+  host: <%=Rails.application.credentials.DB_DEV_HOST%>
+  port: <%=Rails.application.credentials.DB_DEV_PORT%>
+  user: <%=Rails.application.credentials.DB_DEV_USER%>
+  password: <%=Rails.application.credentials.DB_DEV_PASS%>
 
+staging:
+  <<: *default
+  database: <%=Rails.application.credentials.DB_STAGING_NAME%>
+  host: <%=Rails.application.credentials.DB_STAGING_HOST%>
+  port: <%=Rails.application.credentials.DB_STAGING_PORT%>
+  user: <%=Rails.application.credentials.DB_STAGING_USER%>
+  password: <%=Rails.application.credentials.DB_STAGING_PASS%>
 production:
   <<: *default
-  database: <%=Rails.application.credentials.DB_DEV_DATABASE_URL%>
+  database: <%=Rails.application.credentials.DB_STAGING_DATABASE_URL%>
