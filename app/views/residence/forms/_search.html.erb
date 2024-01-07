@@ -1,5 +1,5 @@
 <div class="card-header form-row">
-        <%= form_with url: residence_list_residence_index_path, method: :get, data: { turbo_frame: "user_table" }  do |form| %>
+        <%= form_with url: residence_index_path, method: :get, data: { turbo_frame: "user_table" }  do |form| %>
             <div class="row">
                 <div class="col">
                     <%= form.label :street, "Street:" %>
