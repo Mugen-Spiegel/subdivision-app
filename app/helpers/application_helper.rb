@@ -43,6 +43,10 @@ module ApplicationHelper
         end
     end
 
+    def _subdivision(uuid)
+        Subdivision.find_by(uuid: uuid)
+    end
+
     def money_format(value)
         number_to_currency(value, unit:"₱")
     end
