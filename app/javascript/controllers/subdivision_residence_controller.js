@@ -1,9 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["output", "searchForm", "addForm"]
+  static targets = ["output", "searchForm", "addForm", "copySource"]
   connect() {
     // this.fetch_residence()
+    
   }
 
   fetch_residence() {
@@ -21,5 +22,13 @@ export default class extends Controller {
 
   add_new_residence() {
     this.addFormTarget.requestSubmit()
+  }
+
+  copy() {
+    
+    let uuid = document.getElementById("subdivision_uuid")
+    console.log(uuid)
+    // this.copySourceTarget.value = window.location.href + "/subdivision_setting/" + uuid + "/prepaire_register_link"
+    navigator.clipboard.writeText(this.copySourceTarget.value)
   }
 }
