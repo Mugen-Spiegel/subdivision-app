@@ -50,4 +50,12 @@ module ApplicationHelper
     def money_format(value)
         number_to_currency(value, unit:"₱")
     end
+
+    def system_percentage(subdivision_consumption, residence_consumption)
+        subdivision_consumption.to_f / residence_consumption.to_f * 100.0
+    end
+    
+    def cubic_sign
+        "m³"
+    end
 end
