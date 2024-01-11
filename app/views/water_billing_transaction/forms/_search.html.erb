@@ -17,6 +17,11 @@
                     <%= form.label :status, "Status:" %>
                     <%= form.select :status, status_list, {}, {class:"form-control"}%>
                 </div>
+                
+            </div>
+            <br>
+            <div class="row">
+                
                 <div class="col">
                     <%= form.label :street, "Street:" %>
                     <%= form.select :street, street_list, {}, {class:"form-control"}%>
@@ -30,11 +35,20 @@
                     <%= form.label :last_name, "Last Name:" %>
                     <%= form.text_field :last_name , {class:"form-control", placeholder:"Last Name"} %>
                 </div>
-                <%= form.submit "Search", {class:"btn btn-primary "} %>
+                <div class="col">
+                    <div class="row">
+                    <label class="form-check-label" for="exampleCheck1">&nbsp;</label>
+                     <%= form.submit "Search", {class:"btn btn-primary "} %>
+                    </div>
+                </div>
+                &nbsp;
+                <div class="col">
+                    <div class="row">
+                    <label class="form-check-label" for="exampleCheck1">&nbsp;</label>
+                     <button type="button" data-action="WaterBillingTransactions#printPdft" class="btn btn-primary float-end">Export as PDF</button>
+                    </div>
+                </div>
             </div>
             <br>
-            <div class="row">
-                <button type="button" data-action="WaterBillingTransactions#printPdft" class="btn btn-primary float-end">Print</button>
-            </div>
         <% end %>
 </div>
