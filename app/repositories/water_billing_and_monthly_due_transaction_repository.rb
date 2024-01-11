@@ -182,7 +182,8 @@ class WaterBillingAndMonthlyDueTransactionRepository
         WaterBillingTransaction.user_total_unpaid_bill()
     end
 
-    def sum_amount_group_by_month(year)
-        # WaterBillingTransaction.select()
+    def self.sum_current_reading_by_month(year)
+        puts year
+        WaterBillingTransaction.where(year: year).group(:month).sum(:current_reading)
     end
 end
