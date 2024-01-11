@@ -4,18 +4,17 @@
             <div class="row">
                 <%= form.hidden_field :subdivision_id , {value: params["subdivision_id"]} %>
                 <div class="col">
-                    <%= form.label :year_list, "Year:" %>
                     <%= form.select :year_list, year_list, {}, {class:"form-control"}%>
                 </div>
                 <div class="col">
-                    <%= form.label :month, "Month:" %>
                     <%= form.select :month, month_list, {}, {class:"form-control"}%>
                 </div>
                 <div class="col">
-                    <%= form.label :status, "Status:" %>
                     <%= form.select :status, status_list, {}, {class:"form-control"}%>
                 </div>
-                <%= form.submit "Search", {class:"btn btn-primary"} %>
+                <div class="col">
+                    <%= form.submit "Search", {class:"btn btn-primary"} %>
+                </div>
                 
             </div>
         </div>
