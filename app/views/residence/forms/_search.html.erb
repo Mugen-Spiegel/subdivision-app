@@ -2,18 +2,17 @@
         <%= form_with url: residence_index_path, method: :get, data: { turbo_frame: "user_table" }  do |form| %>
             <div class="row">
                 <div class="col">
-                    <%= form.label :street, "Street:" %>
                     <%= form.select :street, street_list, {}, {class:"form-control"}%>
                 </div>
                 <div class="col">
-                    <%= form.label :first_name, "First Name:" %>
                     <%= form.text_field :first_name , {class:"form-control", placeholder:"First Name"} %>
                 </div>
                 <div class="col">
-                    <%= form.label :last_name, "Last Name:" %>
                     <%= form.text_field :last_name , {class:"form-control", placeholder:"Last Name"} %>
                 </div>
-                <%= form.submit "Search", {class:"btn btn-primary "} %>
+                <div class="col">
+                    <%= form.submit "Search", {class:"btn btn-primary "} %>
+                </div>
             </div>
             <br>
         <% end %>
