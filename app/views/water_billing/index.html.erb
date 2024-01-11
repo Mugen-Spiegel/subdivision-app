@@ -1,5 +1,7 @@
-<%= turbo_frame_tag 'subdivision_water_bill' do %>
+<%= turbo_frame_tag 'main_content' do %>
+    <div data-controller="WaterBilling">
             <%= render "water_billing/form/search_form" %> 
             <%= render "water_billing/modal/add_billing", water_billings: @water_billings %>
             <%= render "water_billing/table/water_billing" , water_billings: @water_billings%> 
+    </div>
 <% end %>
