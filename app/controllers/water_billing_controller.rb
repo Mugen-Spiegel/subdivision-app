@@ -2,12 +2,18 @@ class WaterBillingController < ApplicationController
     before_action :set_water_billing, only: %i[ show edit update destroy upload_image]
     # GET /water_billings or /water_billings.json
     def index
-      @water_billings = WaterBillingRepository.new(params, current_user.subdivision_id)
-      @water_billings = @water_billings.search_water_billing
+      water_billing_repository = WaterBillingRepository.new(params, current_user.subdivision_id)
+      @water_billings = water_billing_repository.search_water_billing
+      @total_current_reading = WaterBillingAndMonthlyDueTransactionRepository.sum_current_reading_by_month(params[:year_list] || Time.now.year)
+      puts @total_current_reading
+
       @total = {
         "current_reading": "N/A",
         "previous_reading": "N/A",
         "consumption": 0,
+        "residence_consumption":0,
+        "system_loss":0,
+        "system_loss_percentage":0.0,
         "bill_amount": 0,
         "paid_amount": 0,
         "balance": 0,
@@ -98,7 +104,6 @@ class WaterBillingController < ApplicationController
         params.require(:water_billing).permit(
           :mother_meter_current_reading,
           :bill_amount,
-          :subdivision_id,
           :year,
           :month,
           :image,
