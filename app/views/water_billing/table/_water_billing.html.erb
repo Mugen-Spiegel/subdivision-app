@@ -18,6 +18,15 @@
                                     CONSUMPTION
                                 </th>
                                 <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    RESIDENCE CONSUMPTION
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    SYSTEM LOSS
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    SYSTEM LOSS PERCENTAGE
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
                                     NUMBER OF RESIDENCE
                                 </th>
                                 <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
@@ -51,17 +60,46 @@
                                     <% (@total[:consumption] += bill.consumption) %>
                                     <% (@total[:bill_amount] += bill.bill_amount) %>
                                     <% (@total[:paid_amount] += bill.paid_amount) %>
+                                    <% (@total[:residence_consumption] += @total_current_reading[bill.month]) %>
+                                    <% (@total[:system_loss] += (bill.consumption - @total_current_reading[bill.month])) %>
                                     <% (@total[:balance] += (bill.bill_amount - bill.paid_amount)) %>
                                     <tr>
-                                        <td><%=Date::MONTHNAMES[bill.month]%></td>
-                                        <td><%=bill.mother_meter_current_reading %></td>
-                                        <td><%=bill.mother_meter_previous_reading %></td>
-                                        <td><%=bill.consumption %></td>
-                                        <td><%=bill.number_residence %></td>
-                                        <td><%=money_format(bill.per_cubic_price) %></td>
-                                        <td><%=money_format(bill.bill_amount) %></td>
-                                        <td><%=money_format(bill.paid_amount) %></td>
-                                        <td><%=money_format(bill.bill_amount - bill.paid_amount) %></td>
+                                        <td>
+                                            <%=Date::MONTHNAMES[bill.month]%>
+                                        </td>
+                                        <td>
+                                            <%=bill.mother_meter_current_reading %><%=cubic_sign%>
+                                        </td>
+                                        <td>
+                                            <%=bill.mother_meter_previous_reading %><%=cubic_sign%>
+                                        </td>
+                                        <td>
+                                            <%=bill.consumption %><%=cubic_sign%>
+                                        </td>
+                                        <td>
+                                            <%=@total_current_reading[bill.month]%><%=cubic_sign%>
+                                        </td>
+                                        <td>
+                                            <%=bill.consumption - @total_current_reading[bill.month]%><%=cubic_sign%>
+                                        </td>
+                                        <td>
+                                            <%=system_percentage((bill.consumption - @total_current_reading[bill.month]), bill.consumption)%>%
+                                        </td>
+                                        <td>
+                                            <%=bill.number_residence %>
+                                        </td>
+                                        <td>
+                                            <%=money_format(bill.per_cubic_price) %>
+                                        </td>
+                                        <td>
+                                            <%=money_format(bill.bill_amount) %>
+                                        </td>
+                                        <td>
+                                            <%=money_format(bill.paid_amount) %>
+                                        </td>
+                                        <td>
+                                            <%=money_format(bill.bill_amount - bill.paid_amount) %>
+                                        </td>
                                         <td>
                                             <label>
                                                 <% unless bill.photos.empty? %>
@@ -93,8 +131,9 @@
                                         <td><%=bill.is_paid%></td>
                                         <td>
                                             <% if bill.is_paid != WaterBillingTransaction::PAID %>
-                                            
-                                                    <%= render "water_billing/modal/update_paid_amount", water_billing: bill %>
+                                                    <% if bill.bill_amount != 0  %>
+                                                        <%= render "water_billing/modal/update_paid_amount", water_billing: bill %>
+                                                    <%end%>
                                                     <% if bill.is_paid != WaterBillingTransaction::PARTIAL %>
                                                         <%= render "water_billing/modal/update_maynilad_billing", water_billing: bill %>
                                                         <%= link_to 'Delete', water_billing_path(bill), {class: "btn btn-danger", data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}} %>
@@ -109,7 +148,10 @@
                                 <tfoot>
                                     <tr>
                                         <td class="right" colspan="3">Total:</td>
-                                        <td class="right"><%=@total[:consumption]%></td>
+                                        <td class="right"><%=@total[:consumption]%><%=cubic_sign%></td>
+                                        <td class="right"><%=@total[:residence_consumption]%><%=cubic_sign%></td>
+                                        <td class="right"><%=@total[:system_loss]%><%=cubic_sign%></td>
+                                        <td class="right"><%= system_percentage(@total[:system_loss], @total[:consumption])%>%</td>
                                         <td class="right">N/A</td>
                                         <td class="right">N/A</td>
                                         <td class="right"><%=money_format(@total[:bill_amount])%></td>
