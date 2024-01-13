@@ -1,9 +1,8 @@
-<h1>New water billing</h1>
 
-<%= render "form", water_billing: @water_billing %>
+<%= turbo_frame_tag 'main_content' do %>
+    <h1>New water billing</h1>
 
-<br>
+    <%= render "form", water_billing: @water_billing %>
 
-<div>
-  <%= link_to "Back to water billings", new_subdivision_water_billing_path %>
-</div>
+    <br>
+<% end %>
