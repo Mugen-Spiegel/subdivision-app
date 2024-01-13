@@ -1,39 +1,4 @@
 <div class="row">
             <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newMotherBill">
-    Add New Bill
-    </button>
-            <!-- Modal -->
-    <div class="modal fade" id="newMotherBill" tabindex="-1" aria-labelledby="newMotherBillLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="newMotherBillLabel">Water Billing</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <%= form_with(model: water_billings, url: water_billing_index_path, method: :post, data: {turbo_frame: "water_bill_table"} ) do |form| %>
-                        <div class="row">
-                            <div class="col">
-                                <%= form.label :mother_meter_current_reading, "Current Reading:" %>
-                                <%= form.number_field :mother_meter_current_reading , {class:"form-control", placeholder:"Current Reading"} %>
-                            </div>
-                            <div class="col">
-                                <%= form.label :year, "Year:" %>
-                                <%= form.select :year, year_list, {}, {class:"form-control"}%>
-                            </div>
-                            <div class="col">
-                                <%= form.label :month, "Month:" %>
-                                <%= form.select :month, month_list, {}, {class:"form-control"}%>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <%= form.submit "Submit", {class:"btn btn-primary", data: {bs_dismiss:"modal"}} %>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    <% end %>
-                </div>
-            </div>
-        </div>
-    </div>
+    <%= link_to "Add Water Billing", new_water_billing_path %>
 </div>
