@@ -5,7 +5,6 @@ class WaterBillingController < ApplicationController
       water_billing_repository = WaterBillingRepository.new(params, current_user.subdivision_id)
       @water_billings = water_billing_repository.search_water_billing
       @total_current_reading = WaterBillingAndMonthlyDueTransactionRepository.sum_current_reading_by_month(params[:year_list] || Time.now.year)
-      puts @total_current_reading
 
       @total = {
         "current_reading": "N/A",
@@ -36,10 +35,9 @@ class WaterBillingController < ApplicationController
     # POST /water_billings or /water_billings.json
     def create
       @water_billing =  WaterBillingRepository.new(water_billing_params, current_user.subdivision_id)
-      @water_billing.create
-  
+      @water_billing = @water_billing.create
       respond_to do |format|
-        unless @water_billing.nil?
+        unless @water_billing.errors.any?
           format.html { redirect_to water_billing_index_path({subdivision_id: water_billing_params["subdivision_id"],}), notice: "Water Billing was successfully created." }
           format.json { render :show, status: :created, location: @water_billing }
         else
@@ -53,7 +51,12 @@ class WaterBillingController < ApplicationController
     def update
       updates_billing_params = WaterBillingRepository.set_up_update_param(@water_billing, water_billing_params)
       respond_to do |format|
-        if @water_billing.update!(updates_billing_params)
+        unless updates_billing_params[:bill_amount].nil?
+          attri = :bill_amount
+        else
+          attri = :paid_amount
+        end
+        if @water_billing.update_attribute(attri, updates_billing_params[attri])
           format.html { redirect_to water_billing_index_path({subdivision_id: @water_billing.subdivision_id}), notice: "Water Billing was successfully updated." }
           format.json { render :show, status: :updated, location: @water_billing }
         else
