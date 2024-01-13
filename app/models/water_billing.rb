@@ -8,7 +8,8 @@ class WaterBilling < ApplicationRecord
     validates :month, presence: true
     validates :year, presence: true
     validates :mother_meter_current_reading, presence: true
-    
+    validate :validation_month_billing?
+    validate :validation_current_reading_billing?
     belongs_to :subdivision
 
     after_create -> { WaterBillingAndMonthlyDueTransactionRepository.after_create_callback(self) }
@@ -25,4 +26,22 @@ class WaterBilling < ApplicationRecord
     PAID = "paid"
     UN_PAID = "unpaid"
     STATUS = [UN_PAID, PAID, PARTIAL]
+
+
+    def validation_month_billing?
+        unless WaterBilling.where(year: self.year, month: self.month).empty?
+            errors.add(:month,  "target is already existing")
+        end
+    end 
+
+    def validation_current_reading_billing?
+        
+        water_billing = WaterBilling.last
+        unless water_billing.nil?
+            unless self&.mother_meter_current_reading > water_billing&.mother_meter_current_reading
+                errors.add(:current_reading,  "should greater than the previous reading")
+            end
+        end
+        
+    end 
 end
