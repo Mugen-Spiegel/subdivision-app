@@ -74,12 +74,16 @@ export default class extends Controller {
       return data
     })
     headers.pop()
-    let footer = table_row_data[table_row_data.length - 1]
+    let footer = table_row_data[table_row_data.length - 2]
     footer.unshift("")
     footer.unshift("")
-    table_row_data[table_row_data.length - 1] = footer
-    console.log(table_row_data)
-    
+    table_row_data[table_row_data.length - 2] = footer
+
+    let footer_column_name = table_row_data[table_row_data.length - 1]
+    footer_column_name.unshift("")
+    footer_column_name.unshift("")
+    table_row_data[table_row_data.length - 1] = footer_column_name
+
     doc.text((document.getElementById("subdivision_name").textContent + "-------YEAR: " + document.getElementById("year").value), 10, 10);
 
     // doc.autoTable({ html: '#water_bill_transaction_table' })
