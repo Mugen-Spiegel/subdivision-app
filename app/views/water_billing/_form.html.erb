@@ -1,22 +1,30 @@
-<%= form_with(model: water_billing, url: subdivision_water_billings_path) do |form| %>
-  <% if water_billing.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(water_billing.errors.count, "error") %> prohibited this water_billing from being saved:</h2>
+<%= form_with(model: @water_billing, url: water_billing_index_path, method: :post, data: {turbo_frame: "water_bill_table"} ) do |form| %>
+      <% if @water_billing.errors.any? %>
+        <div style="color: red">
+          <h2><%= pluralize(@water_billing.errors.count, "error") %> prohibited this water_billing from being saved:</h2>
 
-      <ul>
-        <% water_billing.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+          <ul>
+            <% @water_billing.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <div class="row">
+        <div class="col">
+            <%= form.label :mother_meter_current_reading, "Current Reading:" %>
+            <%= form.number_field :mother_meter_current_reading , {class:"form-control", placeholder:"Current Reading"} %>
+        </div>
+        <div class="col">
+            <%= form.label :year, "Year:" %>
+            <%= form.select :year, year_list[0..1], {}, {class:"form-control"}%>
+        </div>
+        <div class="col">
+            <%= form.label :month, "Month:" %>
+            <%= form.select :month, month_list, {}, {class:"form-control"}%>
+        </div>
     </div>
-  <% end %>
-
-  <div>
-    <%= form.label :per_cubic_price, style: "display: block" %>
-    <%= form.text_field :per_cubic_price %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
+    <div class="modal-footer">
+        <%= form.submit "Submit", {class:"btn btn-primary", data: {bs_dismiss:"modal"}} %>
+    </div>
 <% end %>
