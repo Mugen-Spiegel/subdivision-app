@@ -1,64 +1,7 @@
-<div class="">
-      <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
-        <div class="nav" id="nav-tab" role="tablist">
-          <%unless current_user.nil?%>
-            <a class="navbar-brand" id="subdivision_name" href=""><%=subdivision.name%></a>
-          <%end%>
-          
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                  <a href="/residence" data-turbo-frame="main_content" class="nav-link px-0">
-                    <button class="nav-link active" id="nav-residence-tab" data-bs-toggle="tab" data-bs-target="#residence" type="button" role="tab" aria-controls="residence" aria-selected="true">Residence</button>
-                  </a>
-              </li>
-
-              <li class="nav-item">
-                  <a href="/water_billing_transaction" data-turbo-frame="main_content" class="nav-link px-0">
-                    <button class="nav-link" id="nav-residence-tab" data-bs-toggle="tab" data-bs-target="#residence" type="button" role="tab" aria-controls="residence" aria-selected="true">Residence Billing</button>
-                  </a>
-              </li>
-              <li class="nav-item">
-                  <a href="/water_billing" data-turbo-frame="main_content" class="nav-link px-0">
-                    <button class="nav-link" id="nav-billing-tab" data-bs-toggle="tab"  type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Water Subdivision Billing</button>
-                  </a>
-              </li>
-              <li class="nav-item">
-                  <a href="/" data-turbo-frame="main_content" class="nav-link px-0">
-                    <button class="nav-link" id="nav-billing-tab" data-bs-toggle="tab" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Personnel</button>
-                  </a>
-              </li>
-              <li class="nav-item">
-                  <a href="/" data-turbo-frame="main_content" class="nav-link px-0">
-                    <button class="nav-link" data-bs-toggle="tab"  type="button" role="tab"  aria-selected="false">Finance</button>
-                  </a>
-              </li>
-              <li class="nav-item">
-                  <a href="/" data-turbo-frame="main_content" class="nav-link px-0">
-                      <button class="nav-link" data-bs-toggle="tab" type="button" role="tab"  aria-selected="false">Rules and Regulation</button>
-                  </a>
-              </li>
-              <li class="nav-item">
-                  <a href="/" data-turbo-frame="main_content" class="nav-link px-0">
-                      <button class="nav-link" data-bs-toggle="tab" type="button"  aria-selected="false">Subdivision Settings</button>
-                  </a>
-                  
-              </li>
-               <li class="nav-item">
-                  <a  data-turbo-frame="main_content" class="nav-link px-0">
-                    <%= link_to "Log-out", destroy_user_session_path, method: "delete"%>
-                  </a>
-
-              </li>
-            </ul>
-          </div>
-      </nav>
-  
-      <div class="tab-content" id="nav-tabContent">
-        <br>
-        <%= turbo_frame_tag "main_content" %> 
-      </div>
-</div>
+<% if current_user.subdivision_admin%>
+  <%= render template: "layouts/shared/tab_admin"%>
+<% else%>
+ <div class="dialog">
+    <h1>Access forbidden</h1>
+  </div>
+<% end%>
