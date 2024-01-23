@@ -1,0 +1,7 @@
+<%= turbo_frame_tag 'main_content' do %>
+    <div data-controller="WaterBillingTransactions">
+    <%= render "water_billing_transaction/forms/search" %> 
+
+    <%= render "water_billing_transaction/table/transaction" , transaction: @water_billing_transaction %> 
+    </div>
+<% end %>

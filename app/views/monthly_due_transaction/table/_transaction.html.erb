@@ -1,0 +1,34 @@
+
+<%= turbo_frame_tag 'monthly_due_transactions', target:"_top" do %>
+  <div class="card text-center overflow-auto">
+    <%= turbo_frame_tag 'monthly_due_transactions_table', data: {turbo_frame: "_top", remote:"true"} do %>
+      <table id="users" class="table-bordered overflow-auto table-fixed table table-sm table-hover table-inverse table-responsive">
+          <thead class="thead-inverse|thead-default">
+            <tr>
+              <th>First Name</th>
+              <th>Middle Name</th>
+              <th>Last Name</th>
+              <th>Block</th>
+              <th>Lot</th>
+              <th>Street</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% @residence.each do |user| %>
+            <tr>
+              <td><%= user.first_name&.titleize%></td>
+              <td><%=user.middle_name&.titleize %></td>
+              <td><%=user.last_name&.titleize %></td>
+              <td><%= user&.block%></td>
+              <td><%=user&.lot %></td>
+              <td><%=user&.street %></td>
+              <td>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+      </table>
+    <% end %>
+  </div>
+<% end %>
