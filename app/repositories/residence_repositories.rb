@@ -28,7 +28,8 @@ class ResidenceRepositories
             self.where_like_clause += "street LIKE '%#{self.street.downcase}%'" 
         end
 
-        User.select("id,
+        User.select("uuid,
+            id,
             first_name,
             middle_name,
             last_name,
