@@ -1,0 +1,34 @@
+<%= turbo_frame_tag 'main_content', data: {turbo_frame: "_top", remote:"true"}, loading: :eager do %>
+    <div class="row">
+        <div class="col">
+            <div class="card text-center overflow-auto">
+                <%= turbo_frame_tag 'bills_table', data: {turbo_frame: "_top", remote:"true"} do %>
+                    <table id="users" class="table-bordered overflow-auto table-fixed table table-sm table-hover table-inverse table-responsive">
+                        <thead class="thead-inverse|thead-default">
+                        <tr>
+                            <th>Year</th>
+                            <th>Month</th>
+                            <th>Total Bill</th>
+                            <th>Total Balance</th>
+                            <th>Statement Of Account</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% @bills.each do |key, bill| %>
+                                <tr>
+                                    <td><%=bill[:year]%></td>
+                                    <td><%=Date::MONTHNAMES[bill[:month]]%></td>
+                                    <td><%=money_format(bill[:total_bill]) %></td>
+                                    <td><%=money_format(bill[:total_balance])%></td>
+                                    <td><%= link_to "Preview", "/residence/#{params[:id]}/monthly_bill/#{bill[:year]}/#{bill[:month]}.pdf#navpanes=0", target: :_blank %></td>
+                                </tr>
+                                <% end %>
+                                </tbody>
+                            </table>
+                        <% end %>
+                </div>
+        </div>
+    </div>
+<% end %>
+
+
