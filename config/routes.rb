@@ -15,13 +15,24 @@ Rails.application.routes.draw do
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
-  resources :residence
+
+  match '/threads/:uuid' => 'threads#show', :via => :get
+
+  resources :residence do
+    member do
+      resources :monthly_bill do
+        collection do
+          get ':year/:month', to: 'monthly_bill#bill'
+        end
+      end
+    end
+  end
   
 
   resources :subdivision
   resources :subdivision_setting do
     member do
-      get "prepaire_register_link"
+      get "prepare_register_link"
     end
   end
   resources :water_billing_transaction
@@ -30,6 +41,9 @@ Rails.application.routes.draw do
       post "upload_image"
     end
   end
+  resources :monthly_due_transaction
+  
+
 
   # Defines the root path route ("/")
   root "subdivision#index"
