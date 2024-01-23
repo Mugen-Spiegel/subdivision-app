@@ -1,7 +1,8 @@
-<%= turbo_frame_tag 'main_content', data: {turbo_frame: "_top", remote:"true"} do %>
+
+<%= turbo_frame_tag 'main_content', data: {turbo_frame: "_top"} do %>
     <div data-controller="SubdivisionResidence">
         <%= render "residence/forms/search"%>
         <%= render "residence/independent_component/redirect_user_sign_in"%>
-        <%= render "residence/residence_list/residence_table"%>
+        <%= render "residence/table/residence_list"%>
     </div>
 <% end %>
