@@ -17,7 +17,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_29_171508) do
 
   create_table "monthly_due_transactions", force: :cascade do |t|
     t.string "is_paid"
-    t.float "amount"
+    t.float "bill_amount", default: 0.0
+    t.float "paid_amount", default: 0.0
     t.bigint "user_id"
     t.string "year"
     t.string "month"
@@ -48,6 +49,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_29_171508) do
 
   create_table "subdivisions", force: :cascade do |t|
     t.string "name"
+    t.string "barangay"
     t.string "city"
     t.string "postal_code"
     t.datetime "created_at", null: false
@@ -56,6 +58,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_29_171508) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.string "first_name"
     t.string "middle_name"
     t.string "last_name"
