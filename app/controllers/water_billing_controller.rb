@@ -4,7 +4,7 @@ class WaterBillingController < ApplicationController
     def index
       water_billing_repository = WaterBillingRepository.new(params, current_user.subdivision_id)
       @water_billings = water_billing_repository.search_water_billing
-      @total_current_reading = WaterBillingAndMonthlyDueTransactionRepository.sum_current_reading_by_month(params[:year_list] || Time.now.year)
+      @total_current_reading = WaterBillingTransactionRepository.sum_current_reading_by_month(params[:year_list] || Time.now.year)
 
       @total = {
         "current_reading": "N/A",
