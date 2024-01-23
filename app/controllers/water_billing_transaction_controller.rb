@@ -4,7 +4,7 @@ class WaterBillingTransactionController < ApplicationController
   
     # GET /water_billing_transactions or /water_billing_transactions.json
     def index
-      @water_billing_transaction = WaterBillingAndMonthlyDueTransactionRepository.new(params, subdivision.id)
+      @water_billing_transaction = WaterBillingTransactionRepository.new(params, subdivision.id)
       @total = {
         "current_reading": "N/A",
         "previous_reading": "N/A",
@@ -36,7 +36,7 @@ class WaterBillingTransactionController < ApplicationController
   
     # PATCH/PUT /water_billing_transactions/1 or /water_billing_transactions/1.json
     def update
-      params = WaterBillingAndMonthlyDueTransactionRepository.calculate_bill_amount(@water_billing_transaction, water_billing_transaction_params)
+      params = WaterBillingTransactionRepository.calculate_bill_amount(@water_billing_transaction, water_billing_transaction_params)
       if @water_billing_transaction.update(params)
         render json: @water_billing_transaction.to_json, status: :ok
       else
