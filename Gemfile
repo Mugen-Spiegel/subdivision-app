@@ -42,6 +42,8 @@ gem 'devise'
 
 gem 'cancancan'
 
+gem 'receipts', '~> 2.2'
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
@@ -74,9 +76,6 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
-end
-
-group :localhost do
   gem 'byebug', '~> 11.1', '>= 11.1.3'
 
 end
@@ -85,6 +84,4 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
-gem "cssbundling-rails"
-gem "cssbundling-rails"
 gem "sassc-rails"
