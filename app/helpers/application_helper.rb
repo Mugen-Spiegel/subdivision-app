@@ -58,4 +58,21 @@ module ApplicationHelper
     def cubic_sign
         "m³"
     end
+
+    def residence_balance
+        user_balance = {}
+        User.users_total_water_billing_transactions_unpaid_bill(current_user.subdivision_id).each do |m|
+            user_balance["user_#{m.id}"] = m.bal
+        end
+
+        User.users_total_monthly_due_unpaid_bill(current_user.subdivision_id).each do |m|
+            if user_balance["user_#{m.id}"].nil?
+                user_balance["user_#{m.id}"] = m.bal
+            else
+                user_balance["user_#{m.id}"] += m.bal
+            end
+        end
+        
+        user_balance
+    end
 end
