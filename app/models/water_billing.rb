@@ -1,5 +1,7 @@
 class WaterBilling < ApplicationRecord
 
+    include StatusList
+    
     has_many :photos, dependent: :destroy
     
     accepts_nested_attributes_for :photos, allow_destroy: true
@@ -12,7 +14,7 @@ class WaterBilling < ApplicationRecord
     validate :validation_current_reading_billing?
     belongs_to :subdivision
 
-    after_create -> { WaterBillingAndMonthlyDueTransactionRepository.after_create_callback(self) }
+    after_create -> { WaterBillingTransactionRepository.new({}, self.subdivision_id).after_create_callback(self) }
     before_update -> do
         if self.paid_amount == self.bill_amount
             self.is_paid = PAID
@@ -22,11 +24,6 @@ class WaterBilling < ApplicationRecord
             self.is_paid = UN_PAID
         end
     end
-    PARTIAL = "partial"
-    PAID = "paid"
-    UN_PAID = "unpaid"
-    STATUS = [UN_PAID, PAID, PARTIAL]
-
 
     def validation_month_billing?
         unless WaterBilling.where(year: self.year, month: self.month).empty?
