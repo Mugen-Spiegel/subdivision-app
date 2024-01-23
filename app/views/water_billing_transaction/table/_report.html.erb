@@ -1,0 +1,135 @@
+<%= turbo_frame_tag 'water_bill_transaction_search', target:"_top" do %>
+    <div class="card text-center">
+                    <div class="card-body overflow-scroll table-responsive table-wrap">
+                        <table id="water_bill_transaction_table" class=" overflow-auto table-fixed table table-sm table-bordered table-hover table-inverse table-responsive table-bordered border-primary ">
+                            <thead class="thead-inverse|thead-default" style="position: sticky; top: 0;">
+                                <tr>
+                                    <th  class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                        MONTH
+                                    </th>
+                                    <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                        NAME
+                                    </th>
+                                    <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                        ADDRESS
+                                    </th>
+                                    <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                        CURRENT READING
+                                    </th>
+                                    <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                        PREVIOUS READING
+                                    </th>
+                                    <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                        CONSUMPTION
+                                    </th>
+                                    <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                        PRICE PER CUBIC
+                                    </th>
+                                    <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                       WATER BILL AMOUNT
+                                    </th>
+                                    <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                        MONTHLY DUE
+                                    </th>
+                                    <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                        TOTAL PAYABLE
+                                    </th>
+                                    <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                        PAID AMOUNT
+                                    </th>
+                                    <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                        BALANCE
+                                    </th>
+                                    <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                        STATUS
+                                    </th>
+                                    <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                        DUE DATE
+                                    </th>
+                                    <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                        ACTIONS
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-700">
+
+                                    <% transaction.each do |bill| %>
+                                        <%= turbo_frame_tag "water_bill_transaction_row#{bill.id}" do %>
+                                            <% (@total[:consumption] += bill.consumption) %>
+                                            <% (@total[:bill_amount] += bill.bill_amount) %>
+                                            <% (@total[:monthly_due] += bill.monthly_due) %>
+                                            <% (@total[:total_payable] += bill.total_payable) %>
+                                            <% (@total[:paid_amount] += bill.paid_amount) %>
+                                            
+
+                                            <tr class="warning">
+                                                <td><%=Date::MONTHNAMES[bill.month]%></td>
+                                                <td><%=bill.name.titleize %></td>
+                                                <td><%=bill.address.titleize %></td>
+                                                <td><%=bill.current_reading %><%=cubic_sign%></td>
+                                                <td><%=bill.previous_reading %><%=cubic_sign%></td>
+                                                <td><%=bill.consumption %><%=cubic_sign%></td>
+                                                <td><%=money_format(bill.per_cubic_price) %></td>
+                                                <td><%=money_format(bill.bill_amount)%></td>
+                                                <td><%=money_format(bill.monthly_due) %></td>
+                                                <td><%=money_format(bill.total_payable) %></td>
+                                                <td><%=money_format(bill.paid_amount) %></td>
+                                                <% if bill.is_paid == WaterBillingTransaction::PAID %>
+                                                    <td id= "balance_<%=bill.id %>"><%=money_format(0.0)%></td>
+                                                <% else  %>
+                                                    <% @total[:balance] += @unpaid_bills["#{bill.user_id}_#{bill.month}"] %>
+                                                    
+                                                   <td id= "balance_<%=bill.id %>"> <%= money_format(@unpaid_bills["#{bill.user_id}_#{bill.month}"] ) %></td>
+                                                <% end %>
+                                                <td><%=bill.is_paid.titleize %></td>
+                                                <td><%=bill.created_at.to_date %></td>
+                                                <td>
+                                                    <% if bill.is_paid == WaterBillingTransaction::UN_PAID && bill.is_paid != WaterBillingTransaction::PARTIAL %>
+                                                        <%= render "water_billing_transaction/forms/update_current_bill", water_billing_transaction: bill %>
+                                                        <%= render "water_billing_transaction/forms/update_paid_amount", water_billing_transaction: bill %>
+                                                    <% elsif bill.is_paid == WaterBillingTransaction::PARTIAL %>
+                                                        <%= render "water_billing_transaction/forms/update_paid_amount", water_billing_transaction: bill %>
+                                                    <%end%>
+                                                </td>
+                                            </tr>
+                                        <% end %>
+                                    <% end %>
+                            </tbody>
+                            <%unless transaction.empty?%>
+                                <tfoot>
+                                    <tr>
+                                        <td class="right" colspan="3">Total:</td>
+                                        <td class="right"><%=@total[:current_reading]%></td>
+                                        <td class="right"><%=@total[:previous_reading]%></td>
+                                        <td class="right"><%=@total[:consumption]%><%=cubic_sign%></td>
+                                        <td class="right">N/A</td>
+                                        <td class="right"><%=money_format(@total[:bill_amount])%></td>
+                                        <td class="right"><%=money_format(@total[:monthly_due]) %></td>
+                                        <td class="right"><%=money_format(@total[:total_payable]) %></td>
+                                        <td class="right"><%=money_format(@total[:paid_amount]) %></td>
+                                        <td class="right"><%=money_format(@total[:balance]) %></td>
+                                        <td class="right">N/A</td>
+                                        <td class="right">N/A</td>
+                                        <td class="right"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="right" colspan="3">Column Name:</td>
+                                        <td class="right">Current Reading</td>
+                                        <td class="right">Previous Reading</td>
+                                        <td class="right">Total Consumption</td>
+                                        <td class="right">Price Per Cubic</td>
+                                        <td class="right">Bill Amount</td>
+                                        <td class="right">Monthly Due</td>
+                                        <td class="right">Total Payable</td>
+                                        <td class="right">Paid Amount</td>
+                                        <td class="right">Balance</td>
+                                        <td class="right">Status</td>
+                                        <td class="right">Due Date</td>
+                                        <td class="right"></td>
+                                    </tr>
+                                </tfoot>
+                            <%end%>
+                        </table>
+                    </div>
+    </div>
+<% end %>
