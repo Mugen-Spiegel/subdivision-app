@@ -14,7 +14,7 @@ Update Payment
             <div class="modal-body">
                 <%= form_with(model: water_billing_transaction, id: "payment_#{water_billing_transaction.id}" ,class:"row", data: { action:"WaterBillingTransactions#updatePayment" } ) do |form| %>
                     <div class=" form-switch">
-                        <input class="form-check-input" id="<%= water_billing_transaction.id %>_<%= water_billing_transaction.total_payable%>" data-action="WaterBillingTransactions#exact_amount" type="checkbox" id="exact_amount">
+                        <input class="form-check-input" id="<%= water_billing_transaction.id %>" data-action="WaterBillingTransactions#exact_amount" type="checkbox" id="exact_amount">
                         <label class="form-check-label" for="exact_amount">Exact Amount?</label>
                         <%= form.text_field :paid_amount, { id: "water_billing_payment#{water_billing_transaction.id}" ,class:"form-control", placeholder:"Current Reading"} %>
                     </div>
