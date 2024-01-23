@@ -28,7 +28,7 @@ export default class extends Controller {
     
     let uuid = document.getElementById("subdivision_uuid")
     console.log(uuid)
-    // this.copySourceTarget.value = window.location.href + "/subdivision_setting/" + uuid + "/prepaire_register_link"
+    // this.copySourceTarget.value = window.location.href + "/subdivision_setting/" + uuid + "/prepare_register_link"
     navigator.clipboard.writeText(this.copySourceTarget.value)
   }
 }
